@@ -1,0 +1,7 @@
+pyqt6
+transformers
+accelerate
+sentencepiece
+protobuf          
+python-dotenv
+bitsandbytes
