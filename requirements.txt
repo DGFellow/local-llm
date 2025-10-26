@@ -5,3 +5,6 @@ sentencepiece
 protobuf          
 python-dotenv
 bitsandbytes
+# API Server
+flask==3.0.0
+flask-cors==4.0.0
