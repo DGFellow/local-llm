@@ -72,14 +72,29 @@ The window title shows the active model & precision.
 
 ---
 
+## Screenshots
+
+Place screenshots under `docs/images/` (git‑tracked) and reference them here.
+
+```
+mkdir -p docs/images
+# Save your screenshot as docs/images/image.png
+```
+
+Add to README:
+
+```markdown
+![local-llm UI](docs/images/image.png)
+```
+
+---
+
 ## What’s inside
 
 ```
 ├── .env                  # not checked in; local overrides
 ├── README.md             # this file
 ├── requirements.txt      # Python deps
-├── scripts/
-│   └── tree_script.py
 └── src/
     ├── app.py            # boots the Qt app, wires Config + MainWindow
     ├── config.py         # loads env, exposes Config, save_env()
@@ -97,59 +112,52 @@ The window title shows the active model & precision.
 ---
 
 ## Models & Precision
-
-* Works with many decoder‑style HF models; good starters:
-
-  * `Qwen/Qwen2.5-3B-Instruct` (fast, capable)
-  * `microsoft/Phi-3.5-mini-instruct` (tiny, very fast)
-  * `mistralai/Mistral-7B-Instruct-v0.3` (larger, stronger)
-* Precisions:
-
-  * **auto**: lets Accelerate/Transformers choose (recommended)
-  * **fp16**: half precision on GPU
-  * **int4**: 4‑bit (via `bitsandbytes`), best on Linux; use when VRAM is tight
+- Works with many decoder‑style HF models; good starters:
+  - `Qwen/Qwen2.5-3B-Instruct` (fast, capable)
+  - `microsoft/Phi-3.5-mini-instruct` (tiny, very fast)
+  - `mistralai/Mistral-7B-Instruct-v0.3` (larger, stronger)
+- Precisions:
+  - **auto**: lets Accelerate/Transformers choose (recommended)
+  - **fp16**: half precision on GPU
+  - **int4**: 4‑bit quantization (via `bitsandbytes`), best on Linux; use when VRAM is tight
 
 > Tip (RTX 4090): `PRECISION=fp16` usually yields great throughput. For bigger models, try `int4`.
 
 ---
 
 ## CUDA & Performance Notes
-
-* Install NVIDIA drivers/CUDA runtime appropriate for your OS.
-* If `bitsandbytes` fails to load on Windows/macOS, fall back to `PRECISION=fp16`.
-* OOM? Try a smaller model, `MAX_NEW_TOKENS` ↓, or `PRECISION=int4`.
+- Install NVIDIA drivers/CUDA runtime appropriate for your OS.
+- If `bitsandbytes` fails to load on Windows/macOS, fall back to `PRECISION=fp16`.
+- OOM? Try a smaller model, `MAX_NEW_TOKENS` ↓, or `PRECISION=int4`.
 
 ---
 
 ## Troubleshooting
-
-* **Module import errors**: always run from repo root with `python -m src.app`.
-* **4‑bit load errors**: ensure `bitsandbytes` supports your environment; prefer Linux.
-* **CUDA not detected**: set `DEVICE_MAP=auto` (or `cuda`) and update drivers; otherwise it will use CPU.
-* **Tokenizer/model mismatch**: ensure `MODEL_ID` points to a valid chat‑tuned model.
+- **Module import errors**: always run from repo root with `python -m src.app`.
+- **4‑bit load errors**: ensure `bitsandbytes` supports your environment; prefer Linux.
+- **CUDA not detected**: set `DEVICE_MAP=auto` (or `cuda`) and update drivers; otherwise it will use CPU.
+- **Tokenizer/model mismatch**: ensure `MODEL_ID` points to a valid chat‑tuned model.
 
 ---
 
 ## Development
-
-* Keep business logic in `llm/` and UI concerns in `ui/`.
-* Avoid mixing Qt signals with heavy model ops; use the worker for background generation.
-* Consider adding unit tests (see below) and a `Makefile` for common tasks.
+- Keep business logic in `llm/` and UI concerns in `ui/`.
+- Avoid mixing Qt signals with heavy model ops; use the worker for background generation.
+- Consider adding unit tests (see below) and a `Makefile` for common tasks.
 
 ### Suggested Tests (optional)
-
 ```
+
 tests/
-  test_config.py     # env parsing, defaults, save_env()
-  test_engine.py     # model load stub/mocks; streamer plumbing
-```
+test_config.py     # env parsing, defaults, save_env()
+test_engine.py     # model load stub/mocks; streamer plumbing
 
+````
 Run with:
-
 ```bash
 pip install pytest
 pytest -q
-```
+````
 
 ---
 
@@ -163,4 +171,8 @@ pytest -q
 
 ## License
 
-MIT (or your preference)
+MIT
+
+## Third‑Party Licenses
+
+This project depends on third‑party packages and model weights that are licensed separately (e.g., Transformers, Accelerate, SentencePiece, Protobuf, BitsAndBytes, PyQt6, CUDA runtime, and any model you choose to run). See their respective repositories/distributions for license terms.
