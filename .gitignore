@@ -35,3 +35,4 @@ cache/
 *.pem
 
 tree.txt
+-e "\n# Local scripts\nscripts/" 
